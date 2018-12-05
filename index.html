@@ -89,8 +89,23 @@
             console.log(response.data[0]);
             response.data.forEach(element => {
                 console.log(element.images.fixed_height.url);
-                $("#gifSpace").append("<img class='gif' src='" + element.images.fixed_height.url + "'/>" );
-                $(".gif").attr("height" , "100px").attr("width", "100px");
+
+                var newDiv = $("<div>");
+                var p = $("<p>");
+                p.text("Rating: " + element.rating);
+                p.css("text-align", "center");
+                var image = $("<img>");
+                image.attr("src", element.images.fixed_height_still.url);
+                image.attr("data-still", element.images.fixed_height_still.url);
+                image.attr("data-animate", element.images.fixed_height.url);
+                image.attr("data-state" , "still");
+                image.addClass("gif");
+                newDiv.append(p);
+                newDiv.append(image);
+                newDiv.css("float", "left");
+                newDiv.addClass("gifSquare");
+                $("#gifSpace").append(newDiv);
+
             })
         });
 
@@ -100,6 +115,25 @@
 
     makeButtons(topics);
 
+    $(document).on("click", ".gif", function() {
+        
+        console.log('hello');
+
+        console.log($(this).attr("data-state"));
+
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            var animate = $(this).attr("data-animate");
+            $(this).attr("src" , animate);
+            $(this).attr("data-state" , "animate");
+        }
+        else {
+            var still = $(this).attr("data-still");
+            $(this).attr("src" , still);
+            $(this).attr("data-state", "still");
+      }
+
+    });
 
 </script>
 
