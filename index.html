@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giftastic</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <link  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js">
+
+    <link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+    
+<div class = "container">
+
+    <div class = "row">
+        <!--Button go here-->
+        <div class = "col-md-12" id = "buttonSpace"></div>
+
+    </div>
+
+    <div class = "row">
+        <!--Gifs go here-->
+        <div class = "col-md-8" id = "gifSpace"></div>
+
+        <!--Input goes here-->
+        <dic class = "col-md-4" id = inputSpace>
+            <form id = "animalForm">
+                <label for = "animalInput">Add an animal</label>
+                <input type = "text" id = animalInput>
+                </br>
+                <input id = "addAnimal" type = "submit" value = "Submit">
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+
+    var topics = ["dog" , "cat", "horse" , "hamster", "penguin" , "sheep"];
+
+    function makeButtons() {
+        // empty button space so no duplicates are made
+        $("#buttonSpace").empty();
+
+        topics.forEach(element => {
+            var b = $("<button>");
+            b.addClass("gifButton");
+            b.attr("data-name" , element);
+            b.text(element);
+            $("#buttonSpace").append(b);
+        });
+    }
+
+    $("#addAnimal").on("click", function(event){
+        
+        event.preventDefault();
+
+        var animalInput = $("#animalInput").val().trim();
+        if ((animalInput !== "") && (topics.indexOf(animalInput) === -1)) {
+            topics.push(animalInput);
+
+            makeButtons()
+        }
+    });
+
+    function displayGifs() {
+        var animal = $(this).attr("data-name");
+        var queryUrl = "https://api.giphy.com/v1/gifs/search?api_key=egNb9Lr9HHmp6LWwfN3tjLkCe6H35DZE&limit=10&q=" + animal;
+        
+        $("#gifSpace").empty();
+
+        $.ajax({
+            method: "GET",
+            url: queryUrl
+        }).then(function(response){
+            console.log(response);
+            console.log(response.data[0]);
+            response.data.forEach(element => {
+                console.log(element.images.fixed_height.url);
+                $("#gifSpace").append("<img class='gif' src='" + element.images.fixed_height.url + "'/>" );
+                $(".gif").attr("height" , "100px").attr("width", "100px");
+            })
+        });
+
+    }
+
+    $(document).on("click" , ".gifButton", displayGifs);
+
+    makeButtons(topics);
+
+
+</script>
+
+</html>
