@@ -1,0 +1,36 @@
+body {
+    background-color: lightblue;
+}
+
+button , #addAnimal {
+    background-color: cornflowerblue;
+    border-radius: 5px;
+    color: white;
+}
+
+.container {
+
+}
+
+#buttonSpace {
+
+}
+
+#gifSpace {
+    
+}
+
+#inputSpace {
+    margin: 2px 0;
+}
+
+.gifButton {
+    margin: 2px;
+}
+
+.gifSquare {
+    border: solid 3px cornflowerblue ;
+    margin: 10px;
+    background-color: white;
+    border-radius: 3px;
+}
